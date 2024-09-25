@@ -1,10 +1,17 @@
 import "./App.css";
-import "./store";
+import "./reduxStore/store";
+import { Container } from "react-bootstrap";
+import View from "./components/View";
+import "bootstrap/dist/css/bootstrap.css";
+import Update from "./components/Update";
 
 function App() {
   return (
     <div>
-      <h3>App</h3>
+      <Container>
+        <Update />
+        <View />
+      </Container>
     </div>
   );
 }
