@@ -1,8 +1,7 @@
 import "./App.css";
-import "./reduxStore/store";
+import "bootstrap/dist/css/bootstrap.css";
 import { Container } from "react-bootstrap";
 import View from "./components/View";
-import "bootstrap/dist/css/bootstrap.css";
 import Update from "./components/Update";
 
 function App() {

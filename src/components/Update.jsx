@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addName, addMobile, deposite, withdraw } from "../reduxStore/action";
+import {
+  updateName,
+  updateMobile,
+  updateDeposit,
+  updateWithdraw,
+  addTransaction,
+  withdrawTransaction,
+} from "../reduxStore/actions";
 
 const initialData = {
   name: "",
@@ -12,34 +19,26 @@ const initialData = {
 const Update = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState(initialData);
-  const [error, setError] = useState("");
 
-  const inputHandler = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    // setInput((prevInput) => ({ ...prevInput, [name]: value }));
-    setInput({ ...input, [name]: value });
-    if (error) {
-      setError(""); // Clear the error when typing
-    }
+    setInput((prevInput) => ({ ...prevInput, [name]: value }));
   };
 
-  const add = () => {
-    if (input.name.trim().length === 0) {
-      setError("Enter any  Name");
-    } else if (input.name.length < 3) {
-      setError("Enter a Valid Name which is 3 characters");
-    } else {
-      dispatch(addName(input.name));
-      setInput((prevInput) => ({ ...prevInput, name: "" }));
-    }
+  const handleUpdateName = (name) => {
+    dispatch(updateName(name));
   };
-
-  if (error) {
-    setTimeout(() => {
-      setError("");
-    }, 10000);
-  }
-
+  const handleUpdateMobile = (mobile) => {
+    dispatch(updateMobile(mobile));
+  };
+  const handleDeposit = (balance) => {
+    dispatch(updateDeposit(balance));
+    dispatch(addTransaction(balance));
+  };
+  const handleWithdraw = (balance) => {
+    dispatch(updateWithdraw(balance));
+    dispatch(withdrawTransaction(balance));
+  };
   return (
     <>
       <h5>Update</h5>
@@ -53,15 +52,13 @@ const Update = () => {
                 placeholder="Enter Name"
                 name="name"
                 value={input.name}
-                onChange={(e) => inputHandler(e)}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
-            {error && <p>{error}</p>}
             <Button
               size="sm"
               variant="primary"
-              //   onClick={() => dispatch(addName(input.name))}
-              onClick={add}
+              onClick={() => handleUpdateName(input.name)}
             >
               Update Name
             </Button>{" "}
@@ -74,16 +71,13 @@ const Update = () => {
                 placeholder="Enter Mobile"
                 name="mobile"
                 value={input.mobile}
-                onChange={(e) => inputHandler(e)}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
             <Button
               size="sm"
               variant="primary"
-              onClick={() => {
-                dispatch(addMobile(input.mobile));
-                setInput({ ...input, mobile: "" });
-              }}
+              onClick={() => handleUpdateMobile(input.mobile)}
             >
               Update Mobile
             </Button>{" "}
@@ -95,21 +89,20 @@ const Update = () => {
                 type="number"
                 placeholder="Enter Amount"
                 name="balance"
-                value={input.balance}
-                onChange={(e) => inputHandler(e)}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
             <Button
               size="sm"
               variant="success"
-              onClick={() => dispatch(deposite(input.balance))}
+              onClick={() => handleDeposit(input.balance)}
             >
               Deposit
             </Button>{" "}
             <Button
               size="sm"
               variant="danger"
-              onClick={() => dispatch(withdraw(input.balance))}
+              onClick={() => handleWithdraw(input.balance)}
             >
               Withdraw
             </Button>{" "}
